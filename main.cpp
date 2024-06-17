@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <opencv2/opencv.hpp>
 #include <arm_neon.h>
+#include <opencv2/opencv.hpp>
+#include <stdio.h>
 
 uint32x4_t double_elements(uint32x4_t input) {
-    return(vaddq_u32(input, input));
+    return (vaddq_u32(input, input));
 }
 
 void print_vector(uint32x4_t vec) {
@@ -14,7 +14,7 @@ void print_vector(uint32x4_t vec) {
     std::cout << "[" << elements[0] << ", " << elements[1] << ", " << elements[2] << ", " << elements[3] << "]" << std::endl;
 }
 
-int main(int, char**){
+int main(int, char **) {
     printf("Hello, from nuts!\n");
     cv::Mat img = cv::imread("/mnt/Snorlax/Projects/cpp/fast-image-rotation-aarch64/fish.png");
     if (!img.data) {
@@ -23,7 +23,6 @@ int main(int, char**){
     }
     cv::imwrite("/mnt/Snorlax/Projects/cpp/fast-image-rotation-aarch64/out.png", img);
     std::cout << "done!\n";
-
 
     // Initialize a uint32x4_t vector with some values
     uint32_t data[4] = {1, 2, 3, 4};

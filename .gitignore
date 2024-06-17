@@ -1,12 +1,4 @@
-*png
-*jpg
-*jpeg
-*tiff
 build/
 .vscode/
 outputs/
-opencv/*
-opencv/bleh/*
-opencv/bleh/*/
-!opencv/bleh/
-!opencv/bleh/install/
+opencv/
