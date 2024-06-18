@@ -16,12 +16,12 @@ void print_vector(uint32x4_t vec) {
 
 int main(int, char **) {
     printf("Hello, from nuts!\n");
-    cv::Mat img = cv::imread("/mnt/Snorlax/Projects/cpp/fast-image-rotation-aarch64/fish.png");
+    cv::Mat img = cv::imread("../assets/fish.png");
     if (!img.data) {
         printf("No image data \n");
         return -1;
     }
-    cv::imwrite("/mnt/Snorlax/Projects/cpp/fast-image-rotation-aarch64/out.png", img);
+    cv::imwrite("../outputs/out.png", img);
     std::cout << "done!\n";
 
     // Initialize a uint32x4_t vector with some values
