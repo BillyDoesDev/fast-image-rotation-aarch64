@@ -1,4 +1,5 @@
 from math import *
+import sys
 
 m, n = 5, 10
 
@@ -16,11 +17,11 @@ for y in range(m):
         print(img[y][x], end=" ")
     print()
 
-angle = 9
+angle = int(sys.argv[1])
 alpha = radians(angle)
 
-nrt = ceil(m * sin(alpha)) + n
-mrt = ceil(m * cos(alpha) + n * sin(alpha))
+nrt = ceil(m * sin(alpha)) + n + 20
+mrt = ceil(m * cos(alpha) + n * sin(alpha)) + 20
 print(f"{nrt=}, {mrt=}")
 
 rot = []
@@ -59,6 +60,14 @@ if y_incr > x_incr:
             if pixel > 0 and pixel % mod_factor == 0:
                 b += 1
         # print("----")
+elif y_incr == x_incr:
+    for line in range(max_start_y):
+        a, b = ceil(fs(line)), line
+        for pixel in range(n):
+            rot[b][a + x_offset] = img[line][pixel]
+            a += 1
+            b += 1
+
 
 for y in range(mrt):
     for x in range(nrt):
