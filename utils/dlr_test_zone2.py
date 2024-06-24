@@ -9,13 +9,12 @@ except FileNotFoundError:
 
 m, n = img.shape[:2]
 
-angle = 89
+angle = 120
 alpha = (pi * angle) / 180
 
 mrt = m + n                                         # new image dimensions
 nrt = mrt                                           # new image dimensions                                       
 x_offset = ceil(m * sin(alpha))
-# fs = lambda x: tan(alpha) * x                       # starting line equation
 fs = lambda y: y / tan(alpha)                       # starting line equation
 
 rot = np.zeros((mrt, nrt), dtype=img.dtype)
@@ -30,6 +29,7 @@ for i in range(ceil(n * sin(alpha))):
         try:
             x, y = round(x_), round(y_)
             rot[y, x + x_offset] = img[px, i]
+            rot[y + 1, x + x_offset] = img[px, i]
             x_ -= delta_x
             y_ += delta_y
         except IndexError:

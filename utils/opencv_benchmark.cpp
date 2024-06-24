@@ -6,15 +6,20 @@
 using namespace cv;
 using namespace std;
 
-int main(int argc, char** argv) {
-    Mat img = imread("../assets/fish.png");
+int main(int argc, char* argv[]) {
+    if (argc < 4) {
+        printf("Usage: program input_path output_path angle\n");
+        return -1;
+    }
+
+    Mat img = imread(argv[1]);
     if (!img.data) {
         printf("No image data \n");
         return -1;
     }
 
     // Rotation angle in degrees
-    float rot_angle = 30;
+    float rot_angle = stof(argv[3]);
     // Center of the image
     Point2f center(img.cols / 2.0, img.rows / 2.0);
 
@@ -33,7 +38,7 @@ int main(int argc, char** argv) {
     warpAffine(img, rotated, rotation_mat, bbox.size());
 
 
-    if (imwrite("../outputs/opencv_warpAffine_builtin.png", rotated)) {
+    if (imwrite(argv[2], rotated)) {
         // cout << "Rotated image saved to " << output_image_path << endl;
     } else {
         cerr << "Error saving image" << endl;

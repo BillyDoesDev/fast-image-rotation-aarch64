@@ -2,9 +2,15 @@
 #include <cmath>
 #include <iostream>
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    if (argc < 4) {
+        printf("Usage: program input_path output_path angle\n");
+        return -1;
+    }
+
     // Load the image
-    cv::Mat img = cv::imread("../assets/fish.png");
+    cv::Mat img = cv::imread(argv[1]);
     if (img.empty()) {
         std::cerr << "Error loading image!" << std::endl;
         return -1;
@@ -13,7 +19,7 @@ int main() {
     int m = img.rows;
     int n = img.cols;
 
-    double angle = 30;
+    double angle = std::stoi(argv[3]);
     double alpha = angle * M_PI / 180.0;
 
     double sin_alpha = std::sin(alpha);
@@ -53,7 +59,7 @@ int main() {
     }
 
     // Save the rotated image
-    cv::imwrite("../outputs/opencv_dlr_rotated_image.png", rot);
+    cv::imwrite(argv[2], rot);
 
     return 0;
 }
