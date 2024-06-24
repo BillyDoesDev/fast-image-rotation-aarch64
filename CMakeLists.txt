@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE_FILES
-    utils/dlr_neon.cpp
+    utils/dlr_opencv.cpp
 )
 
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/opencv/bleh/install)
