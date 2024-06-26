@@ -27,7 +27,7 @@ for i in range(ceil(m * cos(alpha))):
 
     for px in range(n):
         try:
-            x, y = round(x_), round(y_)
+            x, y = floor(x_), floor(y_)
             rot[y, x + x_offset] = img[i, px]
             rot[y + 1, x + x_offset] = img[i, px]
             x_ += delta_x
