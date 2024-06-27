@@ -1,0 +1,34 @@
+target,execution time in ns
+./build/dlr_opencv,2729019671
+./build/dlr_opencv,2570069364
+./build/dlr_opencv,2491079565
+./build/dlr_opencv,2546225284
+./build/dlr_opencv,2502609045
+./build/dlr_opencv,2543333871
+./build/dlr_opencv,2583385286
+./build/dlr_opencv,2591489191
+./build/dlr_opencv,2563889040
+./build/dlr_opencv,2524424221
+./build/dlr_opencv took about 2.565 s on average,
+./build/d_benchmark_no_thread,2728122040
+./build/d_benchmark_no_thread,2635961442
+./build/d_benchmark_no_thread,2622959168
+./build/d_benchmark_no_thread,2659353840
+./build/d_benchmark_no_thread,2638701731
+./build/d_benchmark_no_thread,2642570009
+./build/d_benchmark_no_thread,2661175595
+./build/d_benchmark_no_thread,2630528455
+./build/d_benchmark_no_thread,2645683413
+./build/d_benchmark_no_thread,2653285664
+./build/d_benchmark_no_thread took about 2.652 s on average,
+./build/opencv_benchmark,2924461208
+./build/opencv_benchmark,2873832595
+./build/opencv_benchmark,2832550770
+./build/opencv_benchmark,2817321867
+./build/opencv_benchmark,2854244431
+./build/opencv_benchmark,2847808929
+./build/opencv_benchmark,2828452980
+./build/opencv_benchmark,2872365572
+./build/opencv_benchmark,2889168499
+./build/opencv_benchmark,2850786679
+./build/opencv_benchmark took about 2.859 s on average,

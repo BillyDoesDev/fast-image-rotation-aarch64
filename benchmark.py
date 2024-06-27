@@ -1,6 +1,8 @@
 import re
 import csv
+import pickle
 import subprocess
+from datetime import datetime
 from os import path, listdir
 from time import perf_counter_ns
 import matplotlib.pyplot as plt
@@ -12,6 +14,7 @@ input_imgs = [
     if re.findall(r"_\d+\.png", _)
 ]
 input_imgs.sort(key=lambda x: int(re.findall(r"\d+", x)[0]))
+input_imgs = input_imgs[-3:]
 
 # Gather targets
 targets = [
@@ -20,8 +23,8 @@ targets = [
     if "make" not in _.lower()
     and not re.findall(r"\.", _)
     and path.isfile(x := path.join("./build/", _))
-][-2:]
-# print(f"{targets = }")
+][-3:]
+# print(f"{targets = }");exit()
 
 angle = 30
 trials = 10
@@ -32,7 +35,7 @@ data = {target: {img: [] for img in input_imgs} for target in targets}
 for input_img in input_imgs:
     print(f"\n\n[operating on {input_img}]...")
 
-    with open(f"outputs/logs/resolution_{input_img.split('/')[-1]}.csv", mode="w", newline="", encoding="utf-8", ) as f:
+    with open(f"logs/resolution_{input_img.split('/')[-1]}.csv", mode="w", newline="", encoding="utf-8", ) as f:
         writer = csv.writer(f)
         writer.writerow(["target", "execution time in ns"])
 
@@ -97,4 +100,6 @@ ax.grid(True, which="both", linestyle="--", linewidth=0.5, color="gray")
 ax.tick_params(axis="both", colors="white")
 
 plt.tight_layout()
+# save the plot for later :D
+pickle.dump(fig, open(f'logs/{datetime.now().strftime('%b%d_%H_%M')}.fig.pickle', 'wb'))
 plt.show()

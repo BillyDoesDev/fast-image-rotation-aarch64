@@ -24,6 +24,8 @@ int main(int argc, char *argv[]) {
 
     double sin_alpha = std::sin(alpha);
     double cos_alpha = std::cos(alpha);
+
+    // use absoulute values here
     int nrt = static_cast<int>(std::ceil(m * sin_alpha)) + n;
     int mrt = static_cast<int>(std::ceil(m * cos_alpha + n * sin_alpha));
 
