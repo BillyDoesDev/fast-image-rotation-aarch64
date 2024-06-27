@@ -62,6 +62,10 @@ for input_img in input_imgs:
                     print(f"{target} took {time_elapsed} ns to process {input_img}")
                     writer.writerow([target, time_elapsed])
                     timestamps.append(time_elapsed)
+                else:
+                    print("\n" + "ERROR".center(90, "="))
+                    print(r.stderr)
+                    print("="*90 + "\n")
 
             try:
                 avg_time = round((sum(timestamps) / len(timestamps)) / 1e+9, 3)
