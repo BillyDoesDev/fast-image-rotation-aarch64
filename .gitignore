@@ -2,7 +2,7 @@ build/
 .vscode/
 outputs/
 opencv/
-env/
+env*/
 tempCodeRunner*
 spam*
 *pickle

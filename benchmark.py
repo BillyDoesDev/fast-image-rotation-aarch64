@@ -20,10 +20,10 @@ input_imgs = input_imgs[-3:]
 targets = [
     x
     for _ in listdir("./build/")
-    if "make" not in _.lower()
+    if "__b" in _ # so benchmark only those files with a __b in them
     and not re.findall(r"\.", _)
     and path.isfile(x := path.join("./build/", _))
-][-3:]
+]
 # print(f"{targets = }");exit()
 
 angle = 30
