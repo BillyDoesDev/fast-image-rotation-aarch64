@@ -48,8 +48,13 @@ int main(int argc, char *argv[]) {
             int x = std::floor(x_);
             int y = std::floor(y_);
 
-            rot.at<cv::Vec3b>(y, x + x_offset) = img.at<cv::Vec3b>(i, px);
-            rot.at<cv::Vec3b>(y + 1, x + x_offset) = img.at<cv::Vec3b>(i, px);
+            // Ensure that access is within bounds
+            if (y >= 0 && y < mrt && x + x_offset >= 0 && x + x_offset < nrt) {
+                rot.at<cv::Vec3b>(y, x + x_offset) = img.at<cv::Vec3b>(i, px);
+            }
+            if (y + 1 >= 0 && y + 1 < mrt && x + x_offset >= 0 && x + x_offset < nrt) {
+                rot.at<cv::Vec3b>(y + 1, x + x_offset) = img.at<cv::Vec3b>(i, px);
+            }
 
             x_ += delta_x;
             y_ += delta_y;
