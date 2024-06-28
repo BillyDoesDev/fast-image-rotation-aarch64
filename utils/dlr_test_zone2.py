@@ -9,7 +9,7 @@ except FileNotFoundError:
 
 m, n = img.shape[:2]
 
-angle = 120
+angle = 70
 alpha = (pi * angle) / 180
 
 mrt = m + n                                         # new image dimensions

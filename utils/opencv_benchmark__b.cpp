@@ -1,12 +1,10 @@
 #include <iostream>
-#include <stdio.h>
-#include <cmath>
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 4) {
         printf("Usage: program input_path output_path angle\n");
         return -1;
@@ -37,12 +35,7 @@ int main(int argc, char* argv[]) {
     Mat rotated;
     warpAffine(img, rotated, rotation_mat, bbox.size());
 
+    imwrite(argv[2], rotated);
 
-    if (imwrite(argv[2], rotated)) {
-        // cout << "Rotated image saved to " << output_image_path << endl;
-    } else {
-        cerr << "Error saving image" << endl;
-        return 1;
-    }
     return 0;
 }
