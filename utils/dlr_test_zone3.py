@@ -3,24 +3,26 @@ from math import *
 import numpy as np
 
 try:
-    img = plt.imread("./assets/fish.png")
+    img = plt.imread("./assets/fishV.png")
 except FileNotFoundError:
-    img = plt.imread("../assets/fish.png")
+    img = plt.imread("../assets/fishV.png")
 
 m, n = img.shape[:2]
 
-angle = 110 # 90 - 135
+angle = 110 # 90 to 135
 alpha = (pi * angle) / 180
 
 mrt = ceil(abs(m * cos(alpha)) + abs(n * sin(alpha)))
 nrt = ceil(abs(m * sin(alpha)) + abs(n * cos(alpha)))
-x_offset = nrt
-y_offset = ceil(abs(m * cos(alpha)))
-print(f"{(mrt, nrt, x_offset, y_offset, ceil(abs(n * sin(alpha)))) = }")
+
+# we can get away with the deviation in the values by a check later inside the loop
+x_offset = nrt - 2
+y_offset = ceil(abs(m * cos(alpha))) - 2
+print(f"{(m, n, mrt, nrt, x_offset, y_offset, ceil(abs(n * sin(alpha)))) = }")
 
 fs = lambda y: y / tan(alpha)                       # starting line equation
 
-rot = np.zeros((mrt, nrt), dtype=img.dtype)
+rot = np.zeros((mrt, nrt, 4), dtype=img.dtype)
 
 delta_x = abs(sin(alpha))
 delta_y = abs(cos(alpha))
@@ -30,7 +32,7 @@ for i in range(ceil(abs(n * sin(alpha)))):
     
     for px in range(m): # plot all m pixels 
         try:
-            x, y = ceil(x_), ceil(y_)
+            x, y = round(x_), round(y_)
             rot[y + y_offset, x + x_offset] = img[px, i]
             rot[y + y_offset + 1, x + x_offset] = img[px, i]
             x_ -= delta_x
