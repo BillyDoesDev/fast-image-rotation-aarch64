@@ -3,13 +3,13 @@ from math import *
 import numpy as np
 
 try:
-    img = plt.imread("./assets/fish_360.png")
+    img = plt.imread("./assets/fish.png")
 except FileNotFoundError:
-    img = plt.imread("../assets/fish_360.png")
+    img = plt.imread("../assets/fish.png")
 
 m, n = img.shape[:2]
 
-angle = 30
+angle = 37 # 0 to 45
 alpha = (pi * angle) / 180
 
 mrt = ceil(abs(m * cos(alpha)) + abs(n * sin(alpha)))
@@ -19,7 +19,7 @@ print(f"{(mrt, nrt) = }")
 x_offset = ceil(m * sin(alpha))
 fs = lambda y: y / tan(alpha + pi / 2)  # starting line equation
 
-rot = np.zeros((mrt, nrt, 4), dtype=img.dtype)
+rot = np.zeros((mrt, nrt), dtype=img.dtype)
 
 delta_x = cos(alpha)
 delta_y = sin(alpha)
