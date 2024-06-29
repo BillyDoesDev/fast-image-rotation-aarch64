@@ -2,13 +2,14 @@ import matplotlib.pyplot as plt
 from math import *
 import numpy as np
 
-def rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal, negate_coords=False):
+def rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal, negate_coords=False, flip_range=False):
     print("rotating...")
     src_i = 0
     shift = 1
     for i in range(outer_limit):
         x_, y_ = fs(i), i
-        for px in range(last_px):
+        range_ = range(last_px, -1, -1) if flip_range else range(last_px) 
+        for px in range_:
             try:
                 x, y, i_ = [floor(_) for _ in (x_, y_, src_i)]
                 if negate_coords:
@@ -35,7 +36,9 @@ def main():
 
     m, n = img.shape[:2]
 
-    angle = 360
+    angle = -400
+    angle = angle - (angle // 360) * 360
+    if angle < 0 : angle += 360
     alpha = (pi * angle) / 180
 
     sin_alpha = abs(sin(alpha))
@@ -49,40 +52,12 @@ def main():
 
     print(f"{(m, n, mrt, nrt) = }")
 
-    # zone 2 and 6
-    if (z2 := 45 < angle <= 90) or (225 < angle <= 270):
-        x_offset = ceil(m * sin_alpha)
-        y_offset = 0
-        
-        fs = lambda y: y / tan_alpha                  # starting line equation
-        delta_x = -sin_alpha
-        delta_y = cos_alpha
-        delta_i = (-1 if z2 else 1) / delta_x
-
-        outer_limit = ceil(n * sin_alpha)
-        last_px = m
-        rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=False)
-    
-    # zone 3 and 7
-    elif (z2 := 90 < angle <= 135) or (270 < angle <= 315):
-        x_offset = nrt
-        y_offset = ceil(m * cos_alpha)
-        
-        fs = lambda y: y / tan_alpha                       # starting line equation
-        delta_x = -sin_alpha
-        delta_y = -cos_alpha
-        delta_i = (-1 if z2 else 1) / delta_x
-
-        outer_limit = ceil(n * sin_alpha)
-        last_px = m
-        rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=False)
-    
     # zone 1 and 5
-    elif (z1 := 0 < angle <= 45) or (180 < angle <= 225):
+    if (z1 := 0 <= angle <= 45) or (180 < angle <= 225):
         x_offset = ceil(m * sin_alpha)
         y_offset = 0
         
-        fs = lambda y: y / tan_alpha_  # starting line equation
+        fs = lambda y: y / tan_alpha_   # starting line equation
         delta_x = cos_alpha
         delta_y = sin_alpha
         delta_i = 1 / delta_x
@@ -91,12 +66,40 @@ def main():
         last_px = n
         rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=True, negate_coords=not z1)
     
+    # zone 2 and 6
+    elif (z2 := 45 < angle <= 90) or (225 < angle <= 270):
+        x_offset = ceil(m * sin_alpha)
+        y_offset = 0
+        
+        fs = lambda y: y / tan_alpha    # starting line equation
+        delta_x = -sin_alpha
+        delta_y = cos_alpha
+        delta_i = (-1 if z2 else 1) / delta_x
+
+        outer_limit = ceil(n * sin_alpha)
+        last_px = m
+        rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=False, flip_range=not z2)
+    
+    # zone 3 and 7
+    elif (z2 := 90 < angle <= 135) or (270 < angle <= 315):
+        x_offset = nrt
+        y_offset = ceil(m * cos_alpha)
+        
+        fs = lambda y: y / tan_alpha    # starting line equation
+        delta_x = -sin_alpha
+        delta_y = -cos_alpha
+        delta_i = (-1 if z2 else 1) / delta_x
+
+        outer_limit = ceil(n * sin_alpha)
+        last_px = m
+        rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=False, flip_range=not z2)
+    
     # zone 4 and 8
     elif (z1 := 135 < angle <= 180) or (135 < angle <= 360):
         x_offset = ceil(n * cos_alpha)
         y_offset = 0
         
-        fs = lambda y: y / tan_alpha_  # starting line equation
+        fs = lambda y: y / tan_alpha_   # starting line equation
         delta_x = -cos_alpha
         delta_y = sin_alpha
         delta_i = 1 / delta_x
