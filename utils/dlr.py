@@ -18,7 +18,7 @@ def rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_li
                 a, b = (px, i_) if not horizontal else (i_, px)
 
                 rot[shift * (y + y_offset), shift * (x + x_offset)] = img[a, b] # y, x
-                rot[shift * (y + y_offset) + 1, shift * (x + x_offset)] = img[a + shift, b + shift]
+                rot[shift * (y + y_offset) + 1, shift * (x + x_offset)] = img[a + 1, b + 1]
                 x_ += delta_x
                 y_ += delta_y
             except IndexError:
@@ -36,7 +36,7 @@ def main():
 
     m, n = img.shape[:2]
 
-    angle = -400
+    angle = 330
     angle = angle - (angle // 360) * 360
     if angle < 0 : angle += 360
     alpha = (pi * angle) / 180
@@ -95,7 +95,7 @@ def main():
         rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal=False, flip_range=not z2)
     
     # zone 4 and 8
-    elif (z1 := 135 < angle <= 180) or (135 < angle <= 360):
+    elif (z1 := 135 < angle <= 180) or (315 < angle <= 360):
         x_offset = ceil(n * cos_alpha)
         y_offset = 0
         
