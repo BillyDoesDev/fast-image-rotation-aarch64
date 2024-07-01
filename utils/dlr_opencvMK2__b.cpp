@@ -38,22 +38,26 @@ int main(int argc, char *argv[]) {
     int end_pt = static_cast<int>(std::ceil(m * cos_alpha));
     double K = std::tan(alpha + M_PI / 2);
 
-// Parallelize the outer loop using OpenMP
+    // Parallelize the outer loop using OpenMP
+    int i__;
+    double delta_i = 1 / delta_x;
 #pragma omp parallel for
     for (int i = 0; i < end_pt; ++i) {
+        double i_ = i * delta_i; // Each thread initializes its own i_
         double x_ = i / K;
         double y_ = i;
 
+        i__ = floor(i_);
         for (int px = 0; px < n; ++px) {
             int x = std::floor(x_);
             int y = std::floor(y_);
 
             // Ensure that access is within bounds
             if (y >= 0 && y < mrt && x + x_offset >= 0 && x + x_offset < nrt) {
-                rot.at<cv::Vec3b>(y, x + x_offset) = img.at<cv::Vec3b>(i, px);
+                rot.at<cv::Vec3b>(y, x + x_offset) = img.at<cv::Vec3b>(i__, px);
             }
             if (y + 1 >= 0 && y + 1 < mrt && x + x_offset >= 0 && x + x_offset < nrt) {
-                rot.at<cv::Vec3b>(y + 1, x + x_offset) = img.at<cv::Vec3b>(i, px);
+                rot.at<cv::Vec3b>(y + 1, x + x_offset) = img.at<cv::Vec3b>(i__, px);
             }
 
             x_ += delta_x;

@@ -1,34 +1,34 @@
 target,execution time in ns
-./build/dlr_opencvMK2__b,3139417970
-./build/dlr_opencvMK2__b,3009020729
-./build/dlr_opencvMK2__b,3030688634
-./build/dlr_opencvMK2__b,3047276757
-./build/dlr_opencvMK2__b,3008234580
-./build/dlr_opencvMK2__b,3042360922
-./build/dlr_opencvMK2__b,2981062445
-./build/dlr_opencvMK2__b,2982472669
-./build/dlr_opencvMK2__b,3032766449
-./build/dlr_opencvMK2__b,2996178567
-./build/dlr_opencvMK2__b took about 3.027 s on average,
-./build/dlr__b,3661591166
-./build/dlr__b,3578356809
-./build/dlr__b,3552477617
-./build/dlr__b,3522242280
-./build/dlr__b,3529128419
-./build/dlr__b,3554372327
-./build/dlr__b,3534615678
-./build/dlr__b,3488707525
-./build/dlr__b,3518474629
-./build/dlr__b,3543088260
-./build/dlr__b took about 3.548 s on average,
-./build/opencv_benchmark__b,3801472152
-./build/opencv_benchmark__b,3663987452
-./build/opencv_benchmark__b,3724712811
-./build/opencv_benchmark__b,3711938994
-./build/opencv_benchmark__b,3721471445
-./build/opencv_benchmark__b,3691789436
-./build/opencv_benchmark__b,3706329252
-./build/opencv_benchmark__b,3692760526
-./build/opencv_benchmark__b,3717864519
-./build/opencv_benchmark__b,3706022032
-./build/opencv_benchmark__b took about 3.714 s on average,
+./build/dlr_opencvMK2__b,4972287358
+./build/dlr_opencvMK2__b,4933042542
+./build/dlr_opencvMK2__b,4900001133
+./build/dlr_opencvMK2__b,4884841730
+./build/dlr_opencvMK2__b,5296490224
+./build/dlr_opencvMK2__b,4961282609
+./build/dlr_opencvMK2__b,4917352975
+./build/dlr_opencvMK2__b,4911317072
+./build/dlr_opencvMK2__b,4939958184
+./build/dlr_opencvMK2__b,5092061269
+./build/dlr_opencvMK2__b took about 4.981 s on average,
+./build/dlr__b,6556672062
+./build/dlr__b,6170442359
+./build/dlr__b,5810868463
+./build/dlr__b,6211974480
+./build/dlr__b,6220543174
+./build/dlr__b,5857050327
+./build/dlr__b,5765379916
+./build/dlr__b,5936356630
+./build/dlr__b,5790143859
+./build/dlr__b,5793026053
+./build/dlr__b took about 6.011 s on average,
+./build/opencv_benchmark__b,6056062832
+./build/opencv_benchmark__b,6008247219
+./build/opencv_benchmark__b,5976652157
+./build/opencv_benchmark__b,6629912897
+./build/opencv_benchmark__b,6365801182
+./build/opencv_benchmark__b,6412903120
+./build/opencv_benchmark__b,6405778859
+./build/opencv_benchmark__b,6265088997
+./build/opencv_benchmark__b,6417988650
+./build/opencv_benchmark__b,6389930163
+./build/opencv_benchmark__b took about 6.293 s on average,

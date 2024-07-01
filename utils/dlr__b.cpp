@@ -41,7 +41,6 @@ void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offs
         i_inc = 1;
     }
 
-    // #pragma omp parallel for shared(img, rot) private(i_, px, x_, y_, x, y, a, b, a_, b_)
     for (int i = i_start; z4_flip_outer ? i > i_stop : i < i_stop; i += i_inc) {
         x_ = fs(i);
         y_ = i;
