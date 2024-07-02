@@ -3,7 +3,7 @@ from math import *
 import numpy as np
 
 def rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, horizontal, negate_coords=False, flip_range=False):
-    print("rotating...")
+    # print("rotating...")
     src_i = 0
     shift = 1
     for i in range(outer_limit):
@@ -28,15 +28,17 @@ def rotate(img, rot, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_li
         src_i += delta_i
 
 
-def main():
-    try:
-        img = plt.imread("./assets/fish.png")
-    except FileNotFoundError:
-        img = plt.imread("../assets/fish.png")
+def main(fpath, angle):
+    img = plt.imread(fpath)
+    # try:
+    #     img = plt.imread("./assets/fish_1080.png")
+    # except FileNotFoundError:
+    #     img = plt.imread("../assets/fish_1080.png")
 
     m, n = img.shape[:2]
 
-    angle = 330
+    # angle = 330
+    # for angle in range(361):
     angle = angle - (angle // 360) * 360
     if angle < 0 : angle += 360
     alpha = (pi * angle) / 180
@@ -48,9 +50,9 @@ def main():
 
     mrt = ceil(m * cos_alpha + n * sin_alpha)
     nrt = ceil(m * sin_alpha + n * cos_alpha)
-    rot = np.zeros((mrt, nrt), dtype=img.dtype)
+    rot = np.zeros((mrt, nrt, 4), dtype=img.dtype)
 
-    print(f"{(m, n, mrt, nrt) = }")
+    # print(f"{(m, n, mrt, nrt) = }")
 
     # zone 1 and 5
     if (z1 := 0 <= angle <= 45) or (180 < angle <= 225):
@@ -117,8 +119,14 @@ def main():
     plt.subplot(1, 2, 2)
     plt.title("Rotated Image")
     plt.imshow(rot, cmap="gray")
-    plt.show()
+    # plt.show()
+    plt.savefig("rotated_image.png")
+    plt.close()
 
 
 if __name__ == "__main__":
-    main()
+    for angle in range(361):
+        try:
+            main("assets/fish_1080.png", angle)
+        except e:
+            print(f"[{angle}] deg, {e}")
