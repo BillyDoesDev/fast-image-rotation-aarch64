@@ -26,7 +26,9 @@ targets = [
 ]
 # print(f"{targets = }");exit()
 
+# angle = 30
 angles = 361
+del_angle = 10
 
 # Initialize data collection
 data = {target: {img: [] for img in input_imgs} for target in targets}
@@ -41,7 +43,7 @@ for input_img in input_imgs:
         for target in targets:
             timestamps = []
 
-            for angle in range(angles):
+            for angle in range(0, angles, del_angle):
                 start = perf_counter_ns()
                 r = subprocess.run(
                     [
@@ -57,7 +59,7 @@ for input_img in input_imgs:
                     capture_output=True,
                 )
                 time_elapsed = perf_counter_ns() - start
-                if r.returncode == 0:
+                if not r.stderr:
                     print(f"{target} took {time_elapsed} ns to process {input_img}")
                     writer.writerow([target, time_elapsed])
                     timestamps.append(time_elapsed)
@@ -83,7 +85,7 @@ for target in targets:
     for input_img in input_imgs:
         times = data[target][input_img]
         if times:
-            x = range(1, angles + 1)
+            x = range(0, angles, del_angle)
             y = [t / 1e9 for t in times]
             ax.plot(x, y)
             ax.text(
@@ -97,7 +99,7 @@ for target in targets:
             )
 
 ax.set_title("Processing Time for Targets over Multiple Trials", color="white")
-ax.set_xlabel("Trial", color="white")
+ax.set_xlabel("Angle (check only multiples of 10)", color="white")
 ax.set_ylabel("Time (s)", color="white")
 ax.grid(True, which="both", linestyle="--", linewidth=0.5, color="gray")
 ax.tick_params(axis="both", colors="white")
