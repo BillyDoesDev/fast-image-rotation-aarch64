@@ -26,8 +26,7 @@ targets = [
 ]
 # print(f"{targets = }");exit()
 
-angle = 30
-trials = 10
+angles = 361
 
 # Initialize data collection
 data = {target: {img: [] for img in input_imgs} for target in targets}
@@ -42,7 +41,7 @@ for input_img in input_imgs:
         for target in targets:
             timestamps = []
 
-            for trial in range(trials):
+            for angle in range(angles):
                 start = perf_counter_ns()
                 r = subprocess.run(
                     [
@@ -58,7 +57,7 @@ for input_img in input_imgs:
                     capture_output=True,
                 )
                 time_elapsed = perf_counter_ns() - start
-                if not r.stderr:
+                if r.returncode == 0:
                     print(f"{target} took {time_elapsed} ns to process {input_img}")
                     writer.writerow([target, time_elapsed])
                     timestamps.append(time_elapsed)
@@ -84,7 +83,7 @@ for target in targets:
     for input_img in input_imgs:
         times = data[target][input_img]
         if times:
-            x = range(1, trials + 1)
+            x = range(1, angles + 1)
             y = [t / 1e9 for t in times]
             ax.plot(x, y)
             ax.text(

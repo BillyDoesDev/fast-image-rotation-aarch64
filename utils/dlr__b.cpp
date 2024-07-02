@@ -1,13 +1,13 @@
 #include <cmath>
 #include <functional>
 #include <iostream>
-#include <opencv2/opencv.hpp>
 #include <omp.h>
+#include <opencv2/opencv.hpp>
 
 using cv::Mat;
 using std::floor, std::ceil, std::abs, std::sin, std::cos, std::tan, std::function;
 
-void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offset, double delta_x, double delta_y, double delta_i,
+void rotate(const Mat &img, Mat &rot, int m, int n, int mrt, int nrt, int x_offset, int y_offset, double delta_x, double delta_y, double delta_i,
             function<double(int)> fs, int outer_limit, int last_px,
             bool horizontal, bool negate_coords, bool flip_range, bool z48 = false) {
 
@@ -17,8 +17,8 @@ void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offs
     int x, y, i_;
 
     if (z48) {
-        #pragma omp parallel for
-        for (int i = outer_limit; i > -1; i--) {
+#pragma omp parallel for private(x_, y_, i_, x, y, a, b, a_, b_)
+        for (int i = outer_limit - 1; i > 0; i--) {
             int index = i - outer_limit;
             double src_i = index * delta_i;
 
@@ -41,21 +41,28 @@ void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offs
                     b_ = x + x_offset;
                 }
 
-                if (a_ >= 0 && a_ < mrt && b_ >= 0 && b_ < nrt) {
-                    // std::cout << "attempting to map (" << a_ << ", " << b_ << ") to (" << a << ", " << b << ")\n";
-                    rot.at<cv::Vec3b>(a_, b_) = img.at<cv::Vec3b>(a, b);
-                }
-                if (a_ + 1 >= 0 && a_ + 1 < mrt && b_ >= 0 && b_ < nrt)
-                    rot.at<cv::Vec3b>(a_ + 1, b_) = img.at<cv::Vec3b>(a, b);
+                if (a < 0)
+                    a += m;
+                if (b < 0)
+                    b += n;
 
+                if ((a_ >= 0 && a_ < mrt) && (b_ >= 0 && b_ < nrt) &&
+                    (a >= 0 && a < m) && (b >= 0 && b < n)) {
+                    rot.at<cv::Vec3b>(a_, b_) = img.at<cv::Vec3b>(a, b);
+                    if (a_ + 1 >= 0 && a_ + 1 < mrt && b_ >= 0 && b_ < nrt)
+                        rot.at<cv::Vec3b>(a_ + 1, b_) = img.at<cv::Vec3b>(a, b);
+                }
                 x_ += delta_x;
                 y_ += delta_y;
-            }
+            } // end inner for
+
+            // end outer for
         }
+        // end for
         return;
     }
 
-    #pragma omp parallel for
+#pragma omp parallel for private(x_, y_, i_, x, y, a, b, a_, b_)
     for (int i = 0; i < outer_limit; i++) {
         double src_i = i * delta_i;
 
@@ -85,10 +92,18 @@ void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offs
                     b_ = x + x_offset;
                 }
 
-                if (a_ >= 0 && a_ < mrt && b_ >= 0 && b_ < nrt)
+                if (a < 0)
+                    a += m;
+                if (b < 0)
+                    b += n;
+
+                if ((a_ >= 0 && a_ < mrt) && (b_ >= 0 && b_ < nrt) &&
+                    (a >= 0 && a < m) && (b >= 0 && b < n)) {
+                    // std::cout << "a: " << a << ", b: " << b << ", <- a_: " << a_ << ", b_: " << b_ << "\n";
                     rot.at<cv::Vec3b>(a_, b_) = img.at<cv::Vec3b>(a, b);
-                if (a_ + horizontal >= 0 && a_ + horizontal < mrt && b_ + !horizontal >= 0 && b_ + !horizontal < nrt)
-                    rot.at<cv::Vec3b>(a_ + horizontal, b_ + !horizontal) = img.at<cv::Vec3b>(a, b);
+                    if (a_ + horizontal >= 0 && a_ + horizontal < mrt && b_ + !horizontal >= 0 && b_ + !horizontal < nrt)
+                        rot.at<cv::Vec3b>(a_ + horizontal, b_ + !horizontal) = img.at<cv::Vec3b>(a, b);
+                }
 
                 x_ += delta_x;
                 y_ += delta_y;
@@ -114,10 +129,18 @@ void rotate(const Mat &img, Mat &rot, int mrt, int nrt, int x_offset, int y_offs
                     b_ = x + x_offset;
                 }
 
-                if (a_ >= 0 && a_ < mrt && b_ >= 0 && b_ < nrt)
+                if (a < 0)
+                    a += m;
+                if (b < 0)
+                    b += n;
+
+                if ((a_ >= 0 && a_ < mrt) && (b_ >= 0 && b_ < nrt) &&
+                    (a >= 0 && a < m) && (b >= 0 && b < n)) {
+                    // std::cout << "a: " << a << ", b: " << b << ", <- a_: " << a_ << ", b_: " << b_ << "\n";
                     rot.at<cv::Vec3b>(a_, b_) = img.at<cv::Vec3b>(a, b);
-                if (a_ + horizontal >= 0 && a_ + horizontal < mrt && b_ + !horizontal >= 0 && b_ + !horizontal < nrt)
-                    rot.at<cv::Vec3b>(a_ + horizontal, b_ + !horizontal) = img.at<cv::Vec3b>(a, b);
+                    if (a_ + horizontal >= 0 && a_ + horizontal < mrt && b_ + !horizontal >= 0 && b_ + !horizontal < nrt)
+                        rot.at<cv::Vec3b>(a_ + horizontal, b_ + !horizontal) = img.at<cv::Vec3b>(a, b);
+                }
 
                 x_ += delta_x;
                 y_ += delta_y;
@@ -133,10 +156,16 @@ int main(int argc, char const *argv[]) {
     }
 
     Mat img = cv::imread(argv[1]);
+    // Mat img = cv::imread("../assets/fish_2880.png");
     int m = img.rows;
     int n = img.cols;
 
     double angle = std::stod(argv[3]);
+    angle = angle - (static_cast<int>(angle) / 360) * 360.0;
+    if (angle < 0) angle += 360.0;
+
+    // double angle = std::stod(argv[1]);
+    // double angle = 170;
     double alpha = (M_PI * angle) / 180.0;
 
     double sin_alpha = abs(sin(alpha));
@@ -165,7 +194,7 @@ int main(int argc, char const *argv[]) {
 
         outer_limit = ceil(m * cos_alpha);
         last_px = n;
-        rotate(img, rot, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, true, !(0 <= angle && angle <= 45), false);
+        rotate(img, rot, m, n, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, true, !(0 <= angle && angle <= 45), false);
     }
 
     // zone 2 and 6
@@ -179,7 +208,7 @@ int main(int argc, char const *argv[]) {
 
         outer_limit = ceil(n * sin_alpha);
         last_px = m;
-        rotate(img, rot, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, false, false, !(45 < angle && angle <= 90));
+        rotate(img, rot, m, n, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, false, false, !(45 < angle && angle <= 90));
     }
 
     // zone 3 and 7
@@ -193,7 +222,7 @@ int main(int argc, char const *argv[]) {
 
         outer_limit = ceil(n * sin_alpha);
         last_px = m;
-        rotate(img, rot, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, false, false, !(90 < angle && angle <= 135));
+        rotate(img, rot, m, n, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, false, false, !(90 < angle && angle <= 135));
     }
 
     // zone 4 and 8
@@ -208,10 +237,11 @@ int main(int argc, char const *argv[]) {
 
         outer_limit = ceil(m * cos_alpha);
         last_px = n;
-        rotate(img, rot, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, true, !(135 < angle && angle <= 180), false, true);
+        rotate(img, rot, m, n, mrt, nrt, x_offset, y_offset, delta_x, delta_y, delta_i, fs, outer_limit, last_px, true, !(135 < angle && angle <= 180), false, true);
     }
 
     cv::imwrite(argv[2], rot);
+    // cv::imwrite("../lol.png", rot);
 
     return 0;
 }

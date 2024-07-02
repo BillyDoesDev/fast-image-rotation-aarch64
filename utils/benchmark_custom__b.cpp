@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
     int rows = img.rows;
     int cols = img.cols;
 
-    double angle = stof(argv[3]);
+    double angle = stod(argv[3]);
     angle = angle * M_PI / 180.0; // Convert angle to radians
 
     double alpha = cos(angle);
