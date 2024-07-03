@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 
 # Gather input images
 input_imgs = [
-    path.join("./assets/", _)
-    for _ in listdir("./assets/")
-    if re.findall(r"_\d+\.png", _)
+    path.join("./assets/real_life/", _)
+    for _ in listdir("./assets/real_life")
+    # if re.findall(r"_\d+\.png", _)
 ]
-input_imgs.sort(key=lambda x: int(re.findall(r"\d+", x)[0]))
-input_imgs = input_imgs[-3:]
+# input_imgs.sort(key=lambda x: int(re.findall(r"\d+", x)[0]))
+# input_imgs = input_imgs[-3:]
 
 # Gather targets
 targets = [
@@ -59,7 +59,7 @@ for input_img in input_imgs:
                     capture_output=True,
                 )
                 time_elapsed = perf_counter_ns() - start
-                if not r.stderr:
+                if r.returncode == 0:
                     print(f"{target} took {time_elapsed} ns to process {input_img}")
                     writer.writerow([target, time_elapsed])
                     timestamps.append(time_elapsed)
