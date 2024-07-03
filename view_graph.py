@@ -1,6 +1,11 @@
+import sys
 import pickle
-figx = pickle.load(open('logs/Jul02_17_19.fig.pickle', 'rb'))
 
-figx.show() # Show the figure, edit it, etc.!
+if len(sys.argv) < 2:
+    print("Usage: python view_grapth.py path/to/graph.pickle")
+    sys.exit(-1)
 
+figx = pickle.load(open(sys.argv[1], "rb"))
+
+figx.show()
 input("enter something to quit: ")

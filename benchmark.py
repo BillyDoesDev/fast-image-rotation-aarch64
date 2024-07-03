@@ -54,7 +54,7 @@ for input_img in input_imgs:
                             "./outputs/",
                             f"{target.split('/')[-1]}_{input_img.split('/')[-1]}",
                         ),
-                        str(angle),
+                        str(angle), # insert angle here
                     ],
                     capture_output=True,
                 )
@@ -91,7 +91,7 @@ for target in targets:
             ax.text(
                 x[-1],
                 y[-1],
-                f"{target} on {path.basename(input_img)}, took {round((sum(times) / len(times)) / 1e+9, 3)}s on avg",
+                f"{target.split('/')[-1][:-3]} on {path.basename(input_img)}, took {round((sum(times) / len(times)) / 1e+9, 3)}s on avg",
                 fontsize="small",
                 color="white",
                 ha="left",
