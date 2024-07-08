@@ -8,3 +8,6 @@ spam*
 rotated_image.png
 lol.png
 qemu*
+docs/report/*
+!docs/report/*tex
+!docs/report/*pdf
