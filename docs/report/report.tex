@@ -215,59 +215,52 @@
 
 
 \begin{document}
-%
-% paper title
-% Titles are generally capitalized except for words such as a, an, and, as,
-% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
-% not capitalized unless they are the first or last word of the title.
-% Linebreaks \\ can be used within to get better formatting as desired.
-% Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls\\ for IEEE Conferences}
+\title{Fast Parallel Image Rotation Algorithm}
 
 
 % author names and affiliations
-% use a multiple column layout for up to three different
-% affiliations
-\author{\IEEEauthorblockN{Michael Shell}
-\IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
-Georgia Institute of Technology\\
-Atlanta, Georgia 30332--0250\\
-Email: http://www.michaelshell.org/contact.html}
-\and
-\IEEEauthorblockN{Homer Simpson}
-\IEEEauthorblockA{Twentieth Century Fox\\
-Springfield, USA\\
-Email: homer@thesimpsons.com}
-\and
-\IEEEauthorblockN{James Kirk\\ and Montgomery Scott}
-\IEEEauthorblockA{Starfleet Academy\\
-San Francisco, California 96678--2391\\
-Telephone: (800) 555--1212\\
-Fax: (888) 555--1212}}
 
-% conference papers do not typically use \thanks and this command
-% is locked out in conference mode. If really needed, such as for
-% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
-% after \documentclass
+\author {% enter a tabular-like environment
 
-% for over three affiliations, or if they all won't fit within the width
-% of the page, use this alternative format:
-% 
-%\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
-%Homer Simpson\IEEEauthorrefmark{2},
-%James Kirk\IEEEauthorrefmark{3}, 
-%Montgomery Scott\IEEEauthorrefmark{3} and
-%Eldon Tyrell\IEEEauthorrefmark{4}}
-%\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
-%Georgia Institute of Technology,
-%Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
-%\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
-%Email: homer@thesimpsons.com}
-%\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
-%Telephone: (800) 555--1212, Fax: (888) 555--1212}
-%\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+Dhrubajyoti Mandal \\
+\textit{School of Computer Engineering} \\
+\textit{Kalinga Institute of Industrial Technology} \\
+Bhubaneswar, India \\
+22053859@kiit.ac.in \\ \\ \\
 
+Sourav Kumar Parida \\
+\textit{School of Computer Engineering} \\
+\textit{Kalinga Institute of Industrial Technology} \\
+Bhubaneswar, India \\
+22051032@kiit.ac.in \\ \\ 
 
+Subhadeep Bhadra \\
+\textit{School of Computer Engineering} \\
+\textit{Kalinga Institute of Industrial Technology} \\
+Bhubaneswar, India \\
+2205336@kiit.ac.in
+
+\and % switch to a new column
+
+Dr. Sujoy Dutta \\
+\textit{Asst. Prof. \& Asst. CoE} \\
+\textit{School of Computer Engineering} \\
+\textit{Kalinga Institute of Industrial Technology} \\
+Bhubaneswar, India \\
+sdattafcs@kiit.ac.in \\ \\ 
+
+Chiranjeev Bhaya \\
+\textit{Lead Engineer (Camera System)} \\
+\textit{Samsung R\&D Institute} \\
+Bangalore, India \\
+c.bhaya@samsung.com \\ \\ 
+
+Chandra Mohan V \\
+\textit{Architect (Camera System)} \\
+\textit{Samsung R\&D Institute} \\
+Bangalore, India \\
+chandra.mv@samsung.com
+}
 
 
 % use for special paper notices
@@ -282,12 +275,10 @@ Fax: (888) 555--1212}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-The abstract goes here.
+This paper presents a novel fast image rotation algorithm that leverages CPU parallelization while maintaining high image quality. The proposed method is a single-pass algorithm, derived from the existing Double-Line Rotation (DLR) method, which reduces computational complexity and generalizes the algorithm. Initially, a baseline for the given image is calculated to determine the starting line, which defines the initial point for each vertical or horizontal line in the image to be rotated. The corresponding pixels to be mapped are identified using floating point arithmetic, and trigonometric calculations are performed only once per line. This approach ensures precise image transformation with minimal computational overhead.
+
+\textit{Index terms:} Image rotation, line rotation image transform, double-line rotation (DLR), parallel image rotation.
 \end{abstract}
-
-% no keywords
-
-
 
 
 % For peer review papers, you can put extra information on the cover
