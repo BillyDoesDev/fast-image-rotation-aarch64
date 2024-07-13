@@ -11,3 +11,4 @@ qemu*
 docs/report/*
 !docs/report/*tex
 !docs/report/*pdf
+!docs/report/*bib

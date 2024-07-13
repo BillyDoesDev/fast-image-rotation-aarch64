@@ -294,17 +294,29 @@ This paper presents a novel fast image rotation algorithm that leverages CPU par
 
 
 \section{Introduction}
-% no \IEEEPARstart
-This demo file is intended to serve as a ``starter file''
-for IEEE conference papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
+2-D Image Rotation has a number of applications in digital photography and image processing like image matching, alignment, \cite{gaster2012heterogeneous} etc. Highly accurate image rotation is essential for certain image processing tasks such as feature extraction and matching. Whilst there are many state-of-the-art image rotation algorithms, they have limitations in terms of image quality and speed \cite{ashtari2015double} \cite{park2009accurate}.
+Parallel algorithms for image processing aim to execute faster than sequential algorithms, however designing and scheduling a fast parallel image rotation is a challenge \cite{kwon2016study}.
 
-\hfill mds
- 
-\hfill August 26, 2015
+The most straightforward, and perhaps the most well known approach to implement image rotation is by using the rotation matrix \cite{evans2001rotations}, as described here
+$$\begin{bmatrix}
+x'\\ 
+y'
+\end{bmatrix} = \begin{bmatrix}
+x - cx\\ 
+y - cy
+\end{bmatrix} * \begin{bmatrix}
+cos(\theta) & -sin(\theta)\\
+sin(\theta) & cos(\theta)
+\end{bmatrix}$$\\
+where, $\theta$ is the angle of rotation, $x'$ and $y'$ are the new coordinates of the rotated image, and $(cx, cy)$ is the center of the original image, which is treated as the axis of rotation.\\
+Assuming the centre of rotation of the new image is $(cx', cy')$, the final new coordinates are:
+$$\begin{bmatrix}
+x'\\ 
+y'
+\end{bmatrix} = \begin{bmatrix}
+x' + cx'\\ 
+y' + cy'
+\end{bmatrix}$$
 
 \subsection{Subsection Heading Here}
 Subsection text here.
@@ -314,100 +326,138 @@ Subsection text here.
 Subsubsection text here.
 
 
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Literature Survey}
+\subsection{Affine Transformation}
+A basic idea in computer graphics and geometry, affine transformation is a linear mapping method that maintains straight lines, planes, and points. The capacity to carry out a variety of geometric operations, including translation, scaling, rotation, shearing, and reflection, is what defines an Affine transformation. These transformations are powerful and adaptable tools with a wide range of applications because they are defined mathematically by combining translations and linear transformations.
 
-% Note that the IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
+\subsubsection{Properties}
+\begin{itemize}
+  \item Linearity and Translation:  The transformation is composed of a linear transformation  Ax and a translation $\beta$.  This combination allows for a wide range of geometric transformations while preserving the structure of the space.
 
+  \item Preservation of Collinearity and Ratios:  Affine transformations preserve the collinearity of points and the ratios of distances along parallel lines.
 
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
+  \item Combining Transformations:  Multiple affine transformations can be combined into a single affine transformation by matrix multiplication and vector addition.
+\end{itemize}
 
+\section*{Mathematical Formulation}
+Affine transformations can be described by a combination of linear transformations and translations. The general form of an affine transformation in two dimensions is:
+\[
+\mathbf{y} = \mathbf{A}\mathbf{x} + \mathbf{b}
+\]
+where
+\begin{itemize}
+    \item \(\mathbf{x} = \begin{bmatrix} x \\ y \end{bmatrix}\) is the input coordinate vector.\\
+    \item \(\mathbf{A}\) is a \(2 \times 2\) matrix that represents the linear part of the transformation.\\
+    \item \(\mathbf{b} = \begin{bmatrix} t_x \\ t_y \end{bmatrix}\) is the translation vector.\\
+\end{itemize}
 
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% the IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
+For a rotation by an angle \(\theta\) around the origin, the matrix \(\mathbf{A}\) is:
 
+\[
+\mathbf{A} = \begin{bmatrix} \cos(\theta) & -\sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix}
+\]
 
-% Note that the IEEE does not put floats in the very first column
-% - or typically anywhere on the first page for that matter. Also,
-% in-text middle ("here") positioning is typically not used, but it
-% is allowed and encouraged for Computer Society conferences (but
-% not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
-% Note that, LaTeX2e, unlike IEEE journals/conferences, places
-% footnotes above bottom floats. This can be corrected via the
-% \fnbelowfloat command of the stfloats package.
+To center the rotated image within its original dimensions, the translation values \(t_x\) and \(t_y\) are calculated as follows:
 
+\section*{Calculations}
+
+\subsection*{New Dimensions}
+The new width and height of the rotated image are determined using trigonometric functions based on the rotation angle:
+\[
+\text{newWidth} = \lceil \text{width} \cdot |\cos(\theta)| + \text{height} \cdot |\sin(\theta)| \rceil
+\]
+\[
+\text{newHeight} = \lceil \text{width} \cdot |\sin(\theta)| + \text{height} \cdot |\cos(\theta)| \rceil
+\]
+
+\subsection*{Center Points}fine transformation matrix that includes rotation and translation is:
+
+\[
+\mathbf{T} = \begin{bmatrix}
+\cos(\theta) & -\sin(\theta) & t_x \\
+\sin(\theta) & \cos(\theta) & t_y
+\end{bmatrix}
+\]
+
+The new coordinates \((x', y')\) after applying the affine transformation are:
+
+\[
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos(\theta) & -\sin(\theta) & t_x \\
+\sin(\theta) & \cos(\theta) & t_y
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+1
+\end{bmatrix}
+\]
+
+\[
+x' = \cos(\theta) \cdot x - \sin(\theta) \cdot y + t_x
+\]
+
+\[
+y' = \sin(\theta) \cdot x + \cos(\theta) \cdot y + t_y
+\]
+\[
+c_x = \frac{\text{width}}{2}, \quad c_y = \frac{\text{height}}{2}
+\]
+\[
+\text{newCx} = \frac{\text{newWidth}}{2}, \quad \text{newCy} = \frac{\text{newHeight}}{2}
+\]
+
+\subsection*{Translation Values}
+The translation values to center the rotated image within its new dimensions are:
+\[
+t_x = c_x - (\text{newCx} \cdot \cos(\theta) - \text{newCy} \cdot \sin(\theta))
+\]
+\[
+t_y = c_y - (\text{newCx} \cdot \sin(\theta) + \text{newCy} \cdot \cos(\theta))
+\]
+
+Thus, the affine transformation matrix that includes rotation and translation is:
+
+\[
+\mathbf{T} = \begin{bmatrix}
+\cos(\theta) & -\sin(\theta) & t_x \\
+\sin(\theta) & \cos(\theta) & t_y
+\end{bmatrix}
+\]
+
+The new coordinates \((x', y')\) after applying the affine transformation are:
+
+\[
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos(\theta) & -\sin(\theta) & t_x \\
+\sin(\theta) & \cos(\theta) & t_y
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+1
+\end{bmatrix}
+\]
+
+\[
+x' = \cos(\theta) \cdot x - \sin(\theta) \cdot y + t_x
+\]
+
+\[
+y' = \sin(\theta) \cdot x + \cos(\theta) \cdot y + t_y
+\]
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -438,31 +488,11 @@ The authors would like to thank...
 % The "triggered" command can be changed if desired:
 %\IEEEtriggercmd{\enlargethispage{-5in}}
 
-% references section
-
-% can use a bibliography generated by BibTeX as a .bbl file
-% BibTeX documentation can be easily obtained at:
-% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
-% The IEEEtran BibTeX style support page is at:
-% http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
-% argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
-%
-% <OR> manually copy in the resultant .bbl file
-% set second argument of \begin to the number of references
-% (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
-
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-\end{thebibliography}
 
 
+  
+%% references section
+\bibliography{references} 
+\bibliographystyle{ieeetr}
 
-
-% that's all folks
 \end{document}
-
