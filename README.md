@@ -1,7 +1,7 @@
 # fast-image-rotation-aarch64
-haha rotation go brrr
+A fast, parallel image rotation algorithm, based on DLR.
 
-## Setting up the dev environment
+## Setting up the dev environment for arrch64
 
 Install deps</br>
 **For Arch Linux:**
@@ -40,7 +40,7 @@ make install
 ```
 
 
-yea, that's about it, you should be able to use OpenCV in aarch64 now, have fun
+This should compile OpenCV for aarch64.
 
 ## Building the project
 
@@ -48,11 +48,20 @@ Inside this directory, make a build directory and use `cmake` to build your proj
 > Note: make sure to adjust your compiler paths accordingly.
 ```sh
 mkdir build && cd build
-cmake -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-g++ -B . -S ..
-cmake --build . --target all
-# and then run it with an emulator of your choice (for some reason, it seems to run as is on Ubuntu, but as we all all know, Ubuntu is for femboys, so yea)
-qemu-aarch64-static ./nuts
+cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/aarch64-linux-gnu-g++ --no-warn-unused-cli -S .. -B . -G "Unix Makefiles"
+cmake --build . --config Release --target all --
+# and then run it with an emulator of your choice (for some reason, it seems to run as is on Ubuntu)
+qemu-aarch64-static ./name_of_your_binary
 ```
 
-yea, that's it, I'm done here, peace!</br>
-> **PS:** should you encounter any issues cross compiling or whatever, don't come to me. idk. (not even kidding)
+
+## Sample Execution
+
+As of now, the way the project is structured, all the files in the `./utils/` directory get compiled only. The files ending with a `__b` (both cpp files, and their corresponding binaries) signify that these files are being used for benchmarking.
+
+In this repository, the final working file is `./utils/dlr__b.cpp`, and as such, that's the file you should be interested in runing in.
+
+**Usage:**
+```sh
+path/to/dlr__b [path/to/input/image] [path/to/output/image] [angle_in_degrees]
+```
